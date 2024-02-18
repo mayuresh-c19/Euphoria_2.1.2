@@ -169,6 +169,7 @@ export default function SignUp() {
                 Github
               </Button>
               <Button variant="outline">
+              <img className=" w-4 h-4 mr-3"src="../assets/search.png" alt="" />
                 Google
               </Button>
             </div>
