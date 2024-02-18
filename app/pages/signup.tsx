@@ -5,53 +5,85 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import ProducerUploadPage from './producer';
+import * as firebase from "firebase/app";
+import { getFirestore, doc, setDoc} from "firebase/firestore";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import 'firebase/auth'; // If you're using Firebase Auth
+import 'firebase/firestore'; // If you're using Firestore
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCvrK9yYsKdW0zuXVBs6iJY-Qo9oNHGbl0",
+    authDomain: "beatmarket-7c9be.firebaseapp.com",
+    projectId: "beatmarket-7c9be",
+    storageBucket: "beatmarket-7c9be.appspot.com",
+    messagingSenderId: "628739580119",
+    appId: "1:628739580119:web:47a02e6fb7a0a072e89092",
+    measurementId: "G-WF2SR7KRM6"
+};
+
+// Initialize Firebase
+const app: FirebaseApp = initializeApp(firebaseConfig);
 
 export default function SignUp() {
-  const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [nameError, setNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+    const navigate = useNavigate();
+    
+    const [formData, setFormData] = useState({
+        Name: "",
+        email: "",
+        password: "",
+        role: ""
+      });
 
-const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    setNameError(false);
-};
+      const handleChange = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value
+        });
+      };
+  
+      const handleSignUpClick = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        console.log(formData);
+          
+        const auth = getAuth(app);
+        await createUserWithEmailAndPassword(auth, formData.email, formData.password)
+          .then(async (userCreds) => {
+            
+            // Save form data to Firestore
+            const db = getFirestore(app);
+            await setDoc(doc(db, "users/" + userCreds.user.uid), {
+                fullName: formData.Name,
+                email: formData.email,
+                password: formData.password,
+                role: formData.role,
+            });
+            const user = userCreds.user;
+            console.log(user);
+            if (user) {
+                console.log('User created successfully');
+                alert('User created successfully');
+                window.location.reload();
+                navigate("/login");
+            }
+          })
+            
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+            if (errorCode === 'auth/email-already-in-use') {
+                alert('The email address is already in use by another account.');
+              } else {
+                alert(errorMessage);
+              }
+          })
+          navigate("/login");
+        };
 
-const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailError(false);
-};
-
-const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setPassword('');
-};
-
-  const handleSignUpClick = () => {
-    if (!name) {
-        setNameError(true);
-    }
-    if (!email) {
-        setEmailError(true);
-    }
-    if (!password) {
-        setPasswordError(true);
-    }
-
-    // Proceed with sign up if all fields are filled
-    if (name && email && password) {
-        // Add sign up functionality here
-    }
-  };
-
-  const handleForgotPasswordClick = () => {
-    navigate('/forgotpass'); // Navigate to the Forgot Password page
-  };
-
-
+        const handleForgotPasswordClick = () => {
+            navigate('/forgotpass'); // Navigate to the Forgot Password page
+        };
 
   return (
     <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0 mt-4 flex">
@@ -71,22 +103,49 @@ const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 <Label htmlFor="name">
                   Name<span style={{ color: 'red' }}>*</span>
                 </Label>
-                <Input id="name" type="text" placeholder="" value={name} onChange={handleNameChange} required />
-                {nameError && <span className="text-red-600">Name is compulsory.</span>}
+                <Input 
+                id="name" 
+                name="Name" 
+                type="text" 
+                placeholder="" 
+                onChange={handleChange}
+                required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">
                   Email<span style={{ color: 'red' }}>*</span>
                 </Label>
-                <Input id="email" type="email" placeholder="" value={email} onChange={handleEmailChange} required />
-                {emailError && <span className="text-red-600">Email is compulsory.</span>}
+                <Input 
+                id="email" 
+                name="email"
+                type="email" 
+                placeholder="" 
+                onChange={handleChange} 
+                required />
               </div>
             <div className="grid gap-2">
                 <Label htmlFor="password">
                     Password<span style={{ color: 'red' }}>*</span>
                 </Label>
-                <Input id="password" type="password" value={password} onChange={handlePasswordChange} required />
-                {passwordError && <span className="text-red-600">Password is compulsory.</span>}
+                <Input 
+                id="password" 
+                name="password"
+                type="password" 
+                onChange={handleChange} 
+                required />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="role">
+                    Role<span style={{ color: 'red' }}>*</span>
+                </Label>
+                <select 
+                    id="role" 
+                    name="role"
+                    onChange={handleChange} 
+                    required>
+                    <option value="artist">Artist</option>
+                    <option value="producer">Producer</option>
+                </select>
             </div>
               <span className="text-blue-600 hover:underline text-sm cursor-pointer" onClick={handleForgotPasswordClick}>
                 Forget password ?

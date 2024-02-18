@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar } from '@/components/landingnavbar';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import bgImage from '../assets/bg2.jpg';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Landing = () => {
                 </div>
             </section>
         </div>   
-    );
+     );
 }
 
 export default Landing;
