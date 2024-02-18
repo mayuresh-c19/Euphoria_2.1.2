@@ -20,7 +20,7 @@ export default function LoginWithImage() {
   };
 
   const handleForgotPasswordClick = () => {
-    // Add functionality for the forgot password link here
+    navigate('/forgotpass'); // Navigate to the Forgot Password page
   };
 
   const handleLoginClick = () => {
