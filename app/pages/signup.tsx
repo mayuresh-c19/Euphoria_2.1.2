@@ -1,11 +1,8 @@
-// import { Metadata } from "next"
-import Image from "next/image"
-import { Drumstick, icons } from "lucide-react"
-import { useNavigate } from "react-router-dom"
-import Drumsticks from "../assets/drumsticks.jpg"
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Drumstick } from "lucide-react"; // Import individual icons if needed
+import { icons } from "lucide-react"; // Import the icons component
 
-import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -13,29 +10,29 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
+export default function SignUp() {
+  const navigate = useNavigate();
 
-export default function SignUpWithImage() {
-    const navigate = useNavigate();
   return (
     <>
         
-        <div className="container relative lg:h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 sm:grid-cols-1 lg:px-0 mt-4 flex">
-            <div className="relative lg:h-[720px] lg:w-[1024px] md:h-[400px] md:w-[600px] p-10 dark:border-r ml-24 md:block md:items-center md:justify-center hidden"> 
-                <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
-                    <Image
-                    src={Drumsticks}
-                    fill
-                    alt="Drumsticks on a drum pad"
-                    className="rounded-l-lg rounded-r-lg h-full w-full mt-10"
-                    />
-                </div>
+        <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 mt-4 flex">
+            < div className="relative h-[720px] w-[1024px] p-10 dark:border-r ml-24"> 
+                    <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
+                        <Image
+                            src={Drumsticks}
+                            fill
+                            alt="Drumsticks on a drum pad"
+                            className="rounded-l-lg rounded-r-lg h-full w-full mt-10"
+                        />
+                    </div>
             </div>
 
-            <div className="lg:p-8 lg:ml-56 md:mt-20 sm:mt-56 flex">
+            <div className="lg:p-8">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
                 <Card className="mt-4">
                     <CardHeader className="space-y-1">
