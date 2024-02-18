@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import ProducerUploadPage from './producer';
-import * as firebase from "firebase/app";
 import { getFirestore, doc, setDoc} from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { FirebaseApp, initializeApp } from "firebase/app";
@@ -43,6 +41,13 @@ export default function SignUp() {
       };
   
       const handleSignUpClick = async (e: { preventDefault: () => void; }) => {
+        const { Name, email, password, role } = formData;
+
+        if (!Name || !email || !password || !role) {
+            alert('Please fill out all fields');
+            return;
+        }
+
         e.preventDefault();
         console.log(formData);
           
@@ -63,7 +68,6 @@ export default function SignUp() {
             if (user) {
                 console.log('User created successfully');
                 alert('User created successfully');
-                window.location.reload();
                 navigate("/login");
             }
           })
