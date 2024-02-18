@@ -11,12 +11,12 @@ export default function LoginWithImage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleUsernameChange = () => {
+    // setUsername(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handlePasswordChange = () => {
+    // setPassword(e.target.value);
   };
 
   const handleForgotPasswordClick = () => {
@@ -24,7 +24,7 @@ export default function LoginWithImage() {
   };
 
   const handleLoginClick = () => {
-    // Add login functionality here
+    navigate('/explore');
   };
 
   return (

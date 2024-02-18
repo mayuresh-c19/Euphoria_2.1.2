@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from './pages/landing';
 import Login from './pages/login';
 import Signup from './pages/signup';
+import Explore from './pages/explore';
 
 export default function Home() {
   return (
