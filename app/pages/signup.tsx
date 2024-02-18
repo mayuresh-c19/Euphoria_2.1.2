@@ -24,15 +24,15 @@ export default function SignUpWithImage() {
     <>
         
         <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 mt-4 flex">
-            < div className="relative h-[720px] w-[1024px] p-10 dark:border-r ml-24"> 
-                    <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
-                        <Image
-                            src={Drumsticks}
-                            fill
-                            alt="Drumsticks on a drum pad"
-                            className="rounded-l-lg rounded-r-lg h-full w-full mt-10"
-                        />
-                    </div>
+            <div className="relative h-[720px] w-[1024px] p-10 dark:border-r ml-24 md:block hidden"> 
+                <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
+                    <Image
+                    src={Drumsticks}
+                    fill
+                    alt="Drumsticks on a drum pad"
+                    className="rounded-l-lg rounded-r-lg h-full w-full mt-10"
+                    />
+                </div>
             </div>
 
             <div className="lg:p-8">
