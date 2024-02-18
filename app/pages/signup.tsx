@@ -54,9 +54,9 @@ const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0 mt-4 flex">
       <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
+        <div className="mx-auto flex w-full flex-col justify-center lg:grid-cols-1 space-y-6 lg:max-w-lg">
           <Card className="mt-4">
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl text-center">
