@@ -29,7 +29,7 @@ export default function LoginWithImage() {
 
   return (
     <>
-      <div className="container relative h-screen flex items-center justify-center">
+      <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0 mt-4 flex">
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
             <Card className="mt-4">
