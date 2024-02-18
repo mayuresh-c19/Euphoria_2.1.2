@@ -41,6 +41,13 @@ export default function SignUp() {
       };
   
       const handleSignUpClick = async (e: { preventDefault: () => void; }) => {
+        const { Name, email, password, role } = formData;
+
+        if (!Name || !email || !password || !role) {
+            alert('Please fill out all fields');
+            return;
+        }
+
         e.preventDefault();
         console.log(formData);
           
