@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 
 
 const Landing = () => {
+    
     return ( 
         <div>
             <Navbar />
