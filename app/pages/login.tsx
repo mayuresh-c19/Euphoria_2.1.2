@@ -85,7 +85,7 @@ export default function LoginWithImage() {
                 </Button>
                 <Button variant="outline">
                   {/* <icons.Twitter className="mr-2 h-4 w-4" /> */}
-                  <img src="../assets/search.png" alt="" />
+                  <img className=" w-4 h-4 mr-3"src="../assets/search.png" alt="" />
                   Google
                 </Button>
                 
