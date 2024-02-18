@@ -23,8 +23,8 @@ export default function SignUpWithImage() {
   return (
     <>
         
-        <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 mt-4 flex">
-            <div className="relative h-[720px] w-[1024px] p-10 dark:border-r ml-24 md:block hidden"> 
+        <div className="container relative lg:h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 sm:grid-cols-1 lg:px-0 mt-4 flex">
+            <div className="relative lg:h-[720px] lg:w-[1024px] md:h-[400px] md:w-[600px] p-10 dark:border-r ml-24 md:block md:items-center md:justify-center hidden"> 
                 <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
                     <Image
                     src={Drumsticks}
@@ -35,7 +35,7 @@ export default function SignUpWithImage() {
                 </div>
             </div>
 
-            <div className="lg:p-8">
+            <div className="lg:p-8 lg:ml-56 md:mt-20 sm:mt-56 flex">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
                 <Card className="mt-4">
                     <CardHeader className="space-y-1">
