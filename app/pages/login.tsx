@@ -29,7 +29,7 @@ export default function LoginWithImage() {
 
   return (
     <>
-      <div className="container relative h-[800px] items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 mt-4 flex">
+      <div className="container relative h-screen flex items-center justify-center">
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
             <Card className="mt-4">
@@ -75,13 +75,6 @@ export default function LoginWithImage() {
                 <span className=" text-blue-600 hover:underline text-sm cursor-pointer" onClick={() => navigate('/signup')}>Sign Up</span>
               </p>
             </Card>
-          </div>
-        </div>
-
-        <div className="relative h-[720px] w-[30%] p-10 dark:border-r ml-24">
-          <div className="ml-24 rounded-l-lg rounded-r-lg h-full w-full mt-10">
-            {/* Replace the image tag with the desired image for the login page */}
-            <img src="../assets/login.jpg" alt="Login" className="rounded-l-lg rounded-r-lg h-full w-full mt-10" />
           </div>
         </div>
       </div>
