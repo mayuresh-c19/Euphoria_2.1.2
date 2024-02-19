@@ -53,7 +53,7 @@ export function Explore() {
     <>
     <ExpNavbar />
     <div className="flex justify-center bg-slate-400">
-      <Carousel className="w-lg max-w-xs flex flex-col mt-10">
+      <Carousel className="w-lg max-w-xs flex flex-col mt-40">
         <CarouselContent className="flex flex-col">
           {beats.map((beat: any) => (
             <CarouselItem key={beat.id} className="flex-1">
