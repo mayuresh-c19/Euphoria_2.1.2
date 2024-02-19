@@ -4,6 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import 'firebase/auth';
+import 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCvrK9yYsKdW0zuXVBs6iJY-Qo9oNHGbl0",
+  authDomain: "beatmarket-7c9be.firebaseapp.com",
+  projectId: "beatmarket-7c9be",
+  storageBucket: "beatmarket-7c9be.appspot.com",
+  messagingSenderId: "628739580119",
+  appId: "1:628739580119:web:47a02e6fb7a0a072e89092",
+  measurementId: "G-WF2SR7KRM6"
+};
+
+const app: FirebaseApp = initializeApp(firebaseConfig);
+
 
 export default function LoginWithImage() {
   const navigate = useNavigate();
@@ -26,7 +44,7 @@ export default function LoginWithImage() {
     navigate('/forgotpass'); // Navigate to the Forgot Password page
   };
 
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
     let hasError = false;
     if (!username) {
       setUsernameError('Username is compulsory');
@@ -41,7 +59,37 @@ export default function LoginWithImage() {
     }
     // Add login functionality here
     // Once the login is successful, navigate to the ProducerUploadPage
-    navigate('/producer');
+    const auth = getAuth(app);
+    await signInWithEmailAndPassword(auth, username, password)
+      .then(async (userCreds) => {
+        // Fetch user role from Firestore
+        const db = getFirestore(app);
+        const docRef = doc(db, "users", userCreds.user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData.role === 'producer') {
+            navigate('/producer');
+          } else if (userData.role === 'artist') {
+            navigate('/explore');
+          }
+        } else {
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        if (errorCode === 'auth/user-not-found') {
+          alert('No user found with this email.');
+        } else if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert(errorMessage);
+        }
+      });
   };
 
   return (
@@ -56,7 +104,7 @@ export default function LoginWithImage() {
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="username">Username<span style={{ color: 'red' }}>*</span></Label>
+                  <Label htmlFor="username">Email<span style={{ color: 'red' }}>*</span></Label>
                   <Input id="username" type="text" placeholder="" value={username} onChange={handleUsernameChange} />
                   {usernameError && <span style={{ color: 'red', fontSize: '0.75rem' }}>{usernameError}</span>}
                 </div>
