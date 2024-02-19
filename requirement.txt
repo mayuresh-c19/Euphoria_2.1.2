@@ -1,0 +1,4 @@
+Get the correct version of React and Next js documentation
+Also you have to import twMerge 
+#Euph0ria
+#Beat market
