@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { getFirestore, collection, addDoc , doc, getDoc} from "firebase/firestore";
+import { getFirestore, collection, addDoc , doc, getDoc, DocumentData, query, where, getDocs} from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import 'firebase/auth';
 import 'firebase/firestore';
+import firebase from 'firebase/app'; // Import the 'firebase' module
+import { getAuth } from "firebase/auth";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCvrK9yYsKdW0zuXVBs6iJY-Qo9oNHGbl0",
@@ -82,14 +85,53 @@ export default function ProducerUploadPage() {
     }
   };
 
+
+  // const [producerProfile, setProducerProfile] = useState(null);
+
+  // Initialize the Firebase app
+
+
+
+  const auth = getAuth();
+  const user = auth.currentUser; // Access the currentUser property from the auth module
+  const [producerProfile, setProducerProfile] = useState<DocumentData | null>(null);
+
+  useEffect(() => {
+    const fetchProducerProfile = async () => {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const q = query(collection(db, 'users'), where('email', '==', currentUser.email), where('role', '==', 'producer'));
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+          setProducerProfile(doc.data());
+        });
+      }
+    };
+
+    fetchProducerProfile();
+  }, []);
+
   return (
-    <div className="container relative h-screen flex items-center justify-center">
-      <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 lg:max-w-lg">
-          <div className="mt-4">
+        <div className="container relative h-screen flex items-start justify-start mt-52">
+          <div className="lg:p-8 w-1/2">
+            {producerProfile && (
+              <div className="producer-profile text-3xl justify-start items-start bg-slate-400 shadow-md rounded-lg p-6">
+                <h1 className=' text-slate-900 font-bold flex justify-center items-center'>User Profile</h1>
+                <h2 className="font-bold text-xl mb-2">Name: {producerProfile.fullName}</h2>
+                <p className="text-gray-700 text-lg">Email: {producerProfile.email}</p>
+                <p className="text-gray-700 text-lg">Role: {producerProfile.role}</p>
+                {/* Add more fields as necessary */}
+              </div>
+            )}
+          </div>
+          <div className="lg:p-8 w-1/2">
+            <div className="mx-auto flex w-full flex-col justify-end space-y-6 lg:max-w-lg">
             <h1 className="text-4xl text-center mb-6">Upload Beats</h1>
             <div className="grid gap-6">
-              <div className="grid gap-2">
+            
                 <Label className="text-lg">What is the name of your beat?<span style={{ color: 'red' }}>*</span></Label>
                 <Input
                   type="text"
@@ -143,7 +185,9 @@ export default function ProducerUploadPage() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 }
+function auth(firebaseApp: any) {
+  throw new Error('Function not implemented.');
+}
+
