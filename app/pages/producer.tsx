@@ -3,6 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getFirestore, collection, addDoc , doc, getDoc} from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import 'firebase/auth';
+import 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCvrK9yYsKdW0zuXVBs6iJY-Qo9oNHGbl0",
+  authDomain: "beatmarket-7c9be.firebaseapp.com",
+  projectId: "beatmarket-7c9be",
+  storageBucket: "beatmarket-7c9be.appspot.com",
+  messagingSenderId: "628739580119",
+  appId: "1:628739580119:web:47a02e6fb7a0a072e89092",
+  measurementId: "G-WF2SR7KRM6"
+};
+
+const app: FirebaseApp = initializeApp(firebaseConfig);
+
+// Initialize Firestore
+const db = getFirestore(app);
+// Initialize Firebase Storage
+const storage = getStorage(app);
 
 export default function ProducerUploadPage() {
   const navigate = useNavigate();
@@ -30,15 +52,34 @@ export default function ProducerUploadPage() {
       setFile(event.target.files ? event.target.files[0] : null);
   };
 
-  const handleUpload = () => {
-    // Check if required fields are filled
-    // if (beatName && selectedGenres && selectedFile) {
-    //   // Proceed with the upload process
-    //   // You can add your logic here
-    // } else {
-    //   // Prompt the user to fill in the required fields
-    //   alert('Please fill in all the required fields.');
-    // }
+  
+  const handleUpload = async () => {
+    if (beatName && selectedGenres && file) {
+      // Create a reference to the file in Firebase Storage
+      const storageRef = ref(storage, file.name);
+      
+      // Upload the file to Firebase Storage
+      const snapshot = await uploadBytesResumable(storageRef, file);
+      
+      // Get the URL of the uploaded file
+      const url = await getDownloadURL(storageRef);
+      
+      // Create a new document in the 'beats' collection in Firestore
+      const beatDoc = {
+        name: beatName,
+        genres: selectedGenres,
+        isPrivate: isPrivate,
+        price: isPrivate ? price : null, // store the price only if the beat is private
+        fileUrl: url, // the URL of the uploaded file
+      };
+      
+      await addDoc(collection(db, 'beats'), beatDoc);
+      
+      // Navigate to another page or show a success message
+      alert('Beat uploaded successfully!');
+    } else {
+      alert('Please fill in all the required fields.');
+    }
   };
 
   return (
